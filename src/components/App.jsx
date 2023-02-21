@@ -20,18 +20,21 @@ export class App extends Component {
 
 
   componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+    try {
+      const contacts = localStorage.getItem('contacts');
+      const newContacts = JSON.parse(contacts);
+        if (newContacts) {
+          this.setState(() => ({ contacts: newContacts}))
+        }
+    } catch (error) {
+      console.log(error);   
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      console.log('renewed contacts');
+  componentDidUpdate(prevState) {
+     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
+ }
   }
 
   formSubmit = ({ name, number }) => {
